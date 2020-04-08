@@ -20,6 +20,7 @@ public class IndexFragment extends Fragment {
 
     int currentY = 0;
     private View root;
+    private boolean created;
 
 
     @Nullable
@@ -34,14 +35,19 @@ public class IndexFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initList();
+
+        created = true;
     }
 
+    MainListAdapter adapter;
 
     private void initList() {
         View headeBg = root.findViewById(R.id.title_ll);
         RecyclerView recyclerView = root.findViewById(R.id.recycleView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new MainListAdapter(getContext(),this));
+
+        adapter = new MainListAdapter(getContext(), this);
+        recyclerView.setAdapter(new MainListAdapter(getContext(), this));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -59,5 +65,19 @@ public class IndexFragment extends Fragment {
                 headeBg.setAlpha(current > 1 ? 1 : (float) current);
             }
         });
+    }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (created) {
+            if (hidden) {
+                adapter.onHide();
+            } else {
+                adapter.onShow();
+            }
+        }
+
     }
 }

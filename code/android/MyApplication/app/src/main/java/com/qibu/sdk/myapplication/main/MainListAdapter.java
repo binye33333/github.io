@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.ViewTarget;
 import com.qibu.sdk.myapplication.R;
 import com.youth.banner.Banner;
 import com.youth.banner.config.IndicatorConfig;
@@ -22,7 +23,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainListAdapter extends RecyclerView.Adapter {
@@ -30,6 +33,7 @@ public class MainListAdapter extends RecyclerView.Adapter {
     Context context;
     private List<ItemBean> mList;
     private Fragment mFragment;
+    LinkedList<WeakReference<ViewTarget>> linkedList = new LinkedList<>();
 
     public MainListAdapter(Context c, Fragment fragment) {
         mFragment = fragment;
@@ -67,6 +71,23 @@ public class MainListAdapter extends RecyclerView.Adapter {
         } else {
             View root = LayoutInflater.from(context).inflate(R.layout.item_act_list, parent, false);
             return new VHolder(root);
+        }
+    }
+
+
+    public void onHide() {
+        for (WeakReference<ViewTarget> reference : linkedList) {
+            if (reference.get() != null) {
+                reference.get().onStop();
+            }
+        }
+    }
+
+    public void onShow() {
+        for (WeakReference<ViewTarget> reference : linkedList) {
+            if (reference.get() != null) {
+                reference.get().onStart();
+            }
         }
     }
 
@@ -127,16 +148,16 @@ public class MainListAdapter extends RecyclerView.Adapter {
                             "=1585734845100&di=74637504b9f869e95ca8f7be5da99dc9&imgtype=0&src" +
                             "=http%3A%2F" + "%2Fimg3.imgtn.bdimg" + ".com%2Fit%2Fu%3D2157963198" +
                             "%2C2684051640%26fm%3D214%26gp" + "%3D0.jpg";
-            Glide.with(mFragment).asGif().load(url1).into(vholder.image1);
-            Glide.with(mFragment).asGif().load(url2).into(vholder.image2);
-            Glide.with(mFragment).asGif().load(url3).into(vholder.image3);
-            Glide.with(mFragment).asGif().load(url4).into(vholder.image4);
-            Glide.with(mFragment).asGif().load(url5).into(vholder.image5);
-            Glide.with(mFragment).asGif().load(url6).into(vholder.image6);
-            Glide.with(mFragment).asGif().load(url7).into(vholder.image7);
-            Glide.with(mFragment).asGif().load(url8).into(vholder.image8);
-            Glide.with(mFragment).asGif().load(url9).into(vholder.image9);
-            Glide.with(mFragment).asGif().load(url10).into(vholder.image10);
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url1).into(vholder.image1)));
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url2).into(vholder.image2)));
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url3).into(vholder.image3)));
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url4).into(vholder.image4)));
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url5).into(vholder.image5)));
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url6).into(vholder.image6)));
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url7).into(vholder.image7)));
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url8).into(vholder.image8)));
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url9).into(vholder.image9)));
+            linkedList.add(new WeakReference<>(Glide.with(mFragment).asGif().load(url10).into(vholder.image10)));
         }
     }
 

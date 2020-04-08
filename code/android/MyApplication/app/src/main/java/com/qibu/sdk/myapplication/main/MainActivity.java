@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -107,7 +108,10 @@ public class MainActivity extends FragmentActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment lastFragment = mFragmentArray.get(mCurrentTabIndex);
         if (lastFragment != null) {
-            transaction.detach(lastFragment);
+            transaction.hide(lastFragment);
+            if (lastFragment instanceof IndexFragment) {
+                lastFragment.onHiddenChanged(true);
+            }
         }
 
         Fragment fragment = mFragmentArray.get(index);
@@ -117,9 +121,12 @@ public class MainActivity extends FragmentActivity {
             } else {
                 fragment = new IndexFragment();
             }
-            transaction.add(R.id.content, fragment);
+            transaction.replace(R.id.content, fragment);
         } else {
-            transaction.attach(fragment);
+            transaction.show(fragment);
+            if (fragment instanceof IndexFragment) {
+                fragment.onHiddenChanged(false);
+            }
         }
         transaction.commit();
         mCurrentTabIndex = index;
