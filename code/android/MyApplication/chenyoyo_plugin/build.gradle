@@ -1,0 +1,29 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+dependencies {
+    //gradle sdk
+    compile gradleApi()
+    //groovy sdk
+    compile localGroovy()
+
+    //添加依赖，于Android一样
+    compile "com.android.tools.build:gradle:3.4.0"
+    compile "com.android.tools.build:transform-api:1.5.0"
+    compile "javassist:javassist:3.12.1.GA"
+    compile "commons-io:commons-io:2.5"
+}
+repositories {
+    mavenCentral()
+}
+//以上都为固定写法
+//打包到本地或者远程Maven库
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId = 'com.chenyoyo.plugin'   //groupId
+            pom.artifactId = 'aop'  //artifactId
+            pom.version = '0.0.1' //版本号
+            repository(url: uri("$rootProject.rootDir.path/zRepo"))
+        }
+    }
+}

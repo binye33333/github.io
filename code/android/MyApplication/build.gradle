@@ -1,15 +1,15 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven{ url "$rootProject.projectDir.absolutePath/zRepo"}
         google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.chenyoyo.plugin:aop:0.0.1'
     }
 }
 

@@ -1,18 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.qibu.sdk.myapplication"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
-
         }
     }
 
@@ -23,8 +22,11 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
 }
-
+apply plugin: 'aop'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -32,7 +34,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.11.0") {
         exclude group: "com.android.support"
     }
-    implementation 'androidx.fragment:fragment:1.2.0'
+    implementation 'androidx.fragment:fragment:1.2.4'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
     implementation("com.squareup.okhttp3:okhttp:4.4.0")
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'

@@ -1,11 +1,12 @@
 package com.qibu.sdk.myapplication.main;
 
-import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import com.qibu.sdk.myapplication.R;
 import com.qibu.sdk.myapplication.main.fragment.IndexFragment;
 import com.qibu.sdk.myapplication.main.fragment.MeFragment;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +41,63 @@ public class MainActivity extends FragmentActivity {
     private SparseArray<Fragment> mFragmentArray = new SparseArray<>();
     private int mCurrentTabIndex = -1;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_act_main);
+
+
         initBottomTab();
 
         showTab(0);
+//        LifeUtil.markStartTime();
+        addPostDrawListener();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void addPostDrawListener() {
+        getWindow().getDecorView().getRootView().getViewTreeObserver().addOnDrawListener(new ViewTreeObserver.OnDrawListener() {
+            @Override
+            public void onDraw() {
+                Log.e(TAG, "-----------> onDraw " + System.currentTimeMillis());
+            }
+        });
+        getWindow().getDecorView().getRootView().getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                Log.e(TAG, "-----------> onPreDraw " + System.currentTimeMillis());
+                return true;
+            }
+        });
+
+        getWindow().getDecorView().getRootView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Log.e(TAG, "-----------> onGlobalLayout " + System.currentTimeMillis());
+            }
+        });
+
+        try {
+            if (getApplicationInfo().targetSdkVersion <= 28 || Build.VERSION.SDK_INT <= 28) {
+                Class<?> classBook = Class.forName("android.view.ViewRootImpl");
+                Method addFirstDrawHandler = classBook.getDeclaredMethod("addFirstDrawHandler", Runnable.class);
+                addFirstDrawHandler.setAccessible(true);
+                addFirstDrawHandler.invoke(null, new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(TAG, "-----------> addFirstDrawHandler " + System.currentTimeMillis());
+                    }
+                });
+            }
+        } catch (Exception e) {
+
+        }
     }
 
 
@@ -131,4 +184,19 @@ public class MainActivity extends FragmentActivity {
         transaction.commit();
         mCurrentTabIndex = index;
     }
+
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Log.e(TAG, "-----------> onAttachedToWindow " + System.currentTimeMillis());
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        Log.e(TAG, "-----------> onDetachedFromWindow " + System.currentTimeMillis());
+    }
+
+
 }

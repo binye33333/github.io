@@ -6,16 +6,15 @@ import android.os.Looper;
 import android.util.Log;
 import android.util.LogPrinter;
 
+import com.qibu.sdk.myapplication.aop.life.LifeUtil;
+
 public class MyApplication extends Application {
 
     long lastCommendStartTime;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        hook();
     }
-
     private void hook() {
         try {
             Looper.getMainLooper().setMessageLogging(new LogPrinter(Log.ERROR, "main thread") {
