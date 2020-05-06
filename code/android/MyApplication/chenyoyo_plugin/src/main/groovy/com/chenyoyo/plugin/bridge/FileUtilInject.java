@@ -13,7 +13,7 @@ public class FileUtilInject {
     public static void upLoadMethod(MethodVisitor mv, String key) {
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/qibu/sdk/myapplication/aop/life/LifeUtil", "getInstance", "()Lcom/qibu/sdk/myapplication/aop/life/LifeUtil;", false);
         mv.visitLdcInsn(key);
-        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/qibu/sdk/myapplication/aop/life/LifeUtil", "markStartTime", "(Ljava/lang/String;)V", false);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/qibu/sdk/myapplication/aop/life/LifeUtil", "uploadTime", "(Ljava/lang/String;)V", false);
     }
 
 }
