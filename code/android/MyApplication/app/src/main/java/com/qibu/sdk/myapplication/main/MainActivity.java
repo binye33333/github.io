@@ -53,11 +53,6 @@ public class MainActivity extends FragmentActivity {
         showTab(0);
 //        LifeUtil.markStartTime();
         addPostDrawListener();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -199,4 +194,9 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "-----------> onDestroy " + System.currentTimeMillis());
+    }
 }

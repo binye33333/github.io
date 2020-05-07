@@ -30,7 +30,7 @@ public class LifeUtil {
     }
 
     public void uploadTime(String key) {
-        Long start = mStartTimeRecord.get(key);
+        Long start = removeStartTime(key);
         if (start != null) {
             Log.e("LifeUtil", "key point :" + key + " cost is: " + (System.currentTimeMillis() - start));
         }

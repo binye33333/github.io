@@ -1,5 +1,6 @@
 package com.chenyoyo.plugin;
 
+
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -18,19 +19,21 @@ public class LifecycleClassVisitor extends ClassVisitor implements Opcodes {
         super.visit(version, access, name, signature, superName, interfaces);
     }
 
+
+
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
         //MainActivity
         if ("com/qibu/sdk/myapplication/main/MainActivity".equals(this.mClassName)) {
-            if ("onCreate".equals(name) ) {
+            if ("onCreate".equals(name)) {
                 //处理onCreate
                 System.out.println("LifecycleClassVisitor : change method ----> " + name);
-                return new LifecycleOnCreateMethodVisitor(mv);
+                return new LifecycleOnCreateMethodVisitor(Opcodes.ASM5, mv, access, signature, desc);
             } else if ("onDestroy".equals(name)) {
                 //处理onDestroy
                 System.out.println("LifecycleClassVisitor : change method ----> " + name);
-                return new LifecycleOnDestroyMethodVisitor(mv);
+                return new LifecycleOnDestroyMethodVisitor(Opcodes.ASM5, mv, access, signature, desc);
             }
         }
         return mv;

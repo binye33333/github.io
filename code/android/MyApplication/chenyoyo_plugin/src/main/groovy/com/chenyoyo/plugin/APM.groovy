@@ -81,7 +81,7 @@ public class APM extends Transform implements Plugin<Project> {
                             ClassReader classReader = new ClassReader(FileUtils.readFileToByteArray(f));
                             ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
                             ClassVisitor visitor = new LifecycleClassVisitor(classWriter);
-                            classReader.accept(visitor, ClassReader.EXPAND_FRAMES);
+                            classReader.accept(visitor, EXPAND_FRAMES);
                             byte[] code = classWriter.toByteArray();
                             FileOutputStream fileOutputStream = new FileOutputStream(Objects.requireNonNull(f.getParentFile()).getAbsolutePath() + File.separator + fileName);
                             fileOutputStream.write(code);

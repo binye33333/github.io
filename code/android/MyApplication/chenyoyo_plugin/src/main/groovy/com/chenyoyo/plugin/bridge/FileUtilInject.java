@@ -3,6 +3,7 @@ package com.chenyoyo.plugin.bridge;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+
 public class FileUtilInject {
     public static void injectStart(MethodVisitor mv, String key) {
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/qibu/sdk/myapplication/aop/life/LifeUtil", "getInstance", "()Lcom/qibu/sdk/myapplication/aop/life/LifeUtil;", false);
